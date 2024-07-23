@@ -1,4 +1,4 @@
-# Mindfulness
+## Mindfulness
 
 A new Flutter project.
 
