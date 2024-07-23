@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mindfullness/screen/login_page.dart';
 
@@ -19,12 +20,12 @@ class _HomePageState extends State<StartingPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'MIND FULLNESS',
-              style: TextStyle(
+            Text(
+              'MIND FULNESS',
+              style: GoogleFonts.poppins(
                   fontSize: 32,
-                  color: Color.fromARGB(255, 250, 249, 248),
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
             const SizedBox(
               height: 70,
@@ -49,10 +50,11 @@ class _HomePageState extends State<StartingPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text(
-                  'Get Started',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ))
+                child: Text('Get Started',
+                    style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)))
           ],
         ),
       ),

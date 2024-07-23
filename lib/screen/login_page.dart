@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mindfullness/screen/home_page.dart';
 
@@ -18,56 +19,67 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(children: [
             LottieBuilder.asset(
               "lottie/login.json",
-              height: 50,
-              width: 20,
+              height: 200,
+              width: 300,
             ),
-            Column(
-              children: [
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Email or Phone number',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const TextField(
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [Text('Forgot Password ? ')],
-                ),
-                const SizedBox(
-                  height: 18,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 161, 209, 249),
-                      minimumSize: const Size(20, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  const TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Email or Phone number',
+                      border: OutlineInputBorder(),
                     ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ))
-              ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  const TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text('Forgot Password ? ',
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 15, 132, 227),
+                        minimumSize: const Size(20, 40),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text('Login',
+                          style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal))),
+                ],
+              ),
             ),
           ]),
         ));
