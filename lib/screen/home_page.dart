@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,91 +11,59 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<String> sliders = [
+    "images/calm1.png",
+    "images/calm2.png",
+    "images/calm3.png",
+    "images/calm4.png",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 14, 44, 77),
-      body: Column(
-        children: [
-          SafeArea(
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(18.0),
-                  child: Icon(
-                    Icons.arrow_back_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 100,
-                ),
-                Text(
-                  'Library',
-                  style: GoogleFonts.poppins(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                const SizedBox(
-                  width: 70,
-                ),
-                const Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                CircleAvatar(
-                  radius: 15,
-                  child: Image.asset(
-                    'images/person1.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
+        drawer: Drawer(
+          child: ListView(),
+        ),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 7, 168, 243),
+          centerTitle: true,
+          title: Text(
+            'Mindfulness',
+            style: GoogleFonts.poppins(
+                color: const Color.fromARGB(255, 252, 249, 249), fontSize: 24),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Playlists',
-                      style: GoogleFonts.poppins(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CircleAvatar(
+                child: Image.asset(
+                  "images/person1.png",
+                  fit: BoxFit.cover,
                 ),
+              ),
+            )
+          ],
+        ),
+        body: ListView(
+          children: [
+            CarouselSlider(
+              items: [
                 Container(
-                  height: 30,
-                  width: 120,
                   decoration: BoxDecoration(
-                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: NetworkImage(sliders[0]), fit: BoxFit.cover),
                   ),
-                  child: Center(
-                    child: Text(
-                      'Downloaded',
-                      style: GoogleFonts.poppins(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                )
               ],
-            ),
-          ),
-        ],
-      ),
-    );
+              options: CarouselOptions(
+                aspectRatio: 16 / 9,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+              ),
+            )
+          ],
+        ));
   }
 }
