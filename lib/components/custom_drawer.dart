@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mindfullness/screen/settingspage.dart';
+import 'package:mindfullness/screen/starting_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
@@ -26,14 +28,22 @@ class CustomDrawer extends StatelessWidget {
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingPage(),
+                  ));
             },
           ),
           ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Logout'),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StartingPage(),
+                  ));
             },
           ),
         ],

@@ -5,7 +5,7 @@ import 'package:mindfullness/components/custom_drawer.dart';
 import 'package:mindfullness/screen/home_page.dart';
 import 'package:mindfullness/screen/meditation_page.dart';
 import 'package:mindfullness/screen/sleep_page.dart';
-import 'package:mindfullness/components/custon_bottomnavigationbar.dart'; // Ensure this import is added
+// Ensure this import is added
 
 class ArticlesPage extends StatefulWidget {
   const ArticlesPage({super.key});
@@ -97,7 +97,6 @@ class _MyWidgetState extends State<ArticlesPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const MeditationPage()));
-                print('Meditation category tapped');
               },
             ),
             MyContainer(
@@ -107,16 +106,15 @@ class _MyWidgetState extends State<ArticlesPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const ArticlesPage()));
-                print('Articles category tapped');
               },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onBottomNavBarTap,
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: _onBottomNavBarTap,
+      // ),
     );
   }
 }

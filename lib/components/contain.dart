@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
 
-class MyContain extends StatefulWidget {
-  final String imagePath; // Add imagePath parameter
-  // Add text parameter
+class MyContain extends StatelessWidget {
+  final String imagePath;
+  final String text;
 
-  const MyContain({
-    super.key,
-    required this.imagePath,
-    required String title,
-  }); // Require imagePath and text in constructor
+  const MyContain({super.key, required this.imagePath, required this.text});
 
-  @override
-  State<MyContain> createState() => _MyContainState();
-}
-
-class _MyContainState extends State<MyContain> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Container(
-        height: 100, // Increased height to accommodate both image and text
-        width: 352,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 14, 44, 77),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  widget.imagePath,
-                  fit: BoxFit.cover,
-                  width: 100,
-                  height: 80,
-                ),
+    return Container(
+      height: 100, // Increased height to accommodate both image and text
+      width: 352,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 14, 44, 77),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            height: 100,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
               ),
-            ],
+            ),
           ),
-        ),
+          const SizedBox(width: 8), // Space between image and text
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color:
+                    Colors.white, // Ensure text is visible on dark background
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }

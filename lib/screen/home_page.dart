@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:mindfullness/components/audioplayers.dart';
 import 'package:mindfullness/components/contain.dart';
 import 'package:mindfullness/components/container.dart';
 import 'package:mindfullness/components/custom_drawer.dart';
-import 'package:mindfullness/components/custon_bottomnavigationbar.dart';
+import 'package:mindfullness/components/custom_bottomnavigationbar.dart';
 import 'package:mindfullness/screen/articles_page.dart';
 import 'package:mindfullness/screen/meditation_page.dart';
+import 'package:mindfullness/screen/profilepage.dart';
 import 'package:mindfullness/screen/sleep_page.dart';
 import 'package:logging/logging.dart';
 
@@ -68,11 +70,19 @@ class _HomePageState extends State<HomePage> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(10.0),
-            child: CircleAvatar(
-              backgroundImage: AssetImage("images/person1.png"),
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Profilepage()));
+              },
+              child: const CircleAvatar(
+                backgroundImage: AssetImage("images/person1.png"),
+              ),
             ),
           ),
         ],
@@ -124,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Container(
+            SizedBox(
               height: 250,
               width: double.infinity,
               child: CarouselSlider(
@@ -176,13 +186,45 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  _buildImageCard('images/mind1.jpeg'),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ));
+                      },
+                      child: _buildImageCard('images/mind1.jpeg')),
                   const SizedBox(width: 15),
-                  _buildImageCard('images/mind3.jpeg'),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ));
+                      },
+                      child: _buildImageCard('images/mind3.jpeg')),
                   const SizedBox(width: 15),
-                  _buildImageCard('images/mind5.jpeg'),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ));
+                      },
+                      child: _buildImageCard('images/mind5.jpeg')),
                   const SizedBox(width: 15),
-                  _buildImageCard('images/mind2.jpg'),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ));
+                      },
+                      child: _buildImageCard('images/mind2.jpg')),
                 ],
               ),
             ),
@@ -197,23 +239,72 @@ class _HomePageState extends State<HomePage> {
                 textAlign: TextAlign.center,
               ),
             ),
-            const Column(
+            Row(
               children: [
-                MyContain(
-                  imagePath: 'images/mind3.jpeg',
-                  title: 'Relaxing Mindfulness',
-                ),
-                MyContain(
-                  imagePath: 'images/calm5.jpg',
-                  title: 'Calm Morning',
-                ),
-                MyContain(
-                  imagePath: 'images/mind1.jpeg',
-                  title: 'Peaceful Moments',
-                ),
-                MyContain(
-                  imagePath: 'images/calm6.jpeg',
-                  title: 'Peaceful Environment',
+                Expanded(
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ),
+                          );
+                        },
+                        child: const MyContain(
+                          imagePath: 'images/mind3.jpeg',
+                          text: 'Relaxing Mindfulness',
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ),
+                          );
+                        },
+                        child: const MyContain(
+                          imagePath: 'images/calm5.jpg',
+                          text: 'Calm Morning',
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ),
+                          );
+                        },
+                        child: const MyContain(
+                          imagePath: 'images/mind1.jpeg',
+                          text: 'Peaceful Moments',
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Audioplayers(),
+                            ),
+                          );
+                        },
+                        child: const MyContain(
+                          imagePath: 'images/calm6.jpeg',
+                          text: 'Peaceful Environment',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

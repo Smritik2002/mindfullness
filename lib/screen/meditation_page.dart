@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindfullness/components/container.dart';
 import 'package:mindfullness/components/custom_drawer.dart';
-import 'package:mindfullness/components/custon_bottomnavigationbar.dart';
 import 'package:mindfullness/screen/home_page.dart';
 import 'package:mindfullness/screen/articles_page.dart';
 import 'package:mindfullness/screen/sleep_page.dart'; // Assuming you have a SleepPage
+import 'package:mindfullness/components/audioplayers.dart'; // Import Audioplayers
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -133,7 +133,6 @@ class _MeditationPageState extends State<MeditationPage> {
                   texts: const ["Meditation"],
                   onTap: () {
                     // No need to push another MeditationPage
-                    print('Meditation category tapped');
                   },
                 ),
                 MyContainer(
@@ -143,7 +142,6 @@ class _MeditationPageState extends State<MeditationPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ArticlesPage()));
-                    print('Articles category tapped');
                   },
                 ),
               ],
@@ -162,30 +160,41 @@ class _MeditationPageState extends State<MeditationPage> {
                 return Padding(
                   padding:
                       const EdgeInsets.all(8.0), // Padding around each item
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(8.0), // Apply border radius
-                      image: DecorationImage(
-                        image: AssetImage(imageAssets[index]),
-                        fit: BoxFit.cover, // Ensure image covers the container
-                      ),
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Audioplayers(),
                         ),
-                        child: Text(
-                          imageTexts[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(8.0), // Apply border radius
+                        image: DecorationImage(
+                          image: AssetImage(imageAssets[index]),
+                          fit:
+                              BoxFit.cover, // Ensure image covers the container
+                        ),
+                      ),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Text(
+                            imageTexts[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -197,10 +206,10 @@ class _MeditationPageState extends State<MeditationPage> {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onBottomNavBarTap,
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: _onBottomNavBarTap,
+      // ),
     );
   }
 }
