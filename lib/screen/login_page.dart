@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mindfullness/screen/forgot_page.dart';
 import 'package:mindfullness/screen/home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,15 +45,25 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text('Forgot Password ? ',
-                          style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal))
-                    ],
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Forgot Password?',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 18,
