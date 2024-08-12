@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mindfullness/components/container.dart';
+import 'package:mindfullness/components/custom_bottomnavigationbar.dart';
 import 'package:mindfullness/components/custom_drawer.dart';
 import 'package:mindfullness/screen/home_page.dart';
 import 'package:mindfullness/screen/articles_page.dart';
-import 'package:mindfullness/screen/sleep_page.dart'; // Assuming you have a SleepPage
-import 'package:mindfullness/components/audioplayers.dart'; // Import Audioplayers
+import 'package:mindfullness/screen/sleep_page.dart';
+import 'package:mindfullness/components/audioplayers.dart';
+import 'package:mindfullness/screen/yogapage.dart';
 
 class MeditationPage extends StatefulWidget {
   const MeditationPage({super.key});
@@ -15,7 +17,7 @@ class MeditationPage extends StatefulWidget {
 }
 
 class _MeditationPageState extends State<MeditationPage> {
-  int _currentIndex = 1; // Initialize to default index for Meditation
+  int _currentIndex = 2; // Default to Meditation Page
 
   final List<String> imageAssets = [
     'images/calm1.jpeg',
@@ -25,7 +27,7 @@ class _MeditationPageState extends State<MeditationPage> {
     'images/calm5.jpg',
     'images/calm6.jpeg',
     'images/calm7.jpeg',
-    'images/mind1.jpeg',
+    'images/yoga1.jpeg',
     'images/calm8.jpeg',
     'images/mind2.jpg',
     'images/mind3.jpeg',
@@ -48,9 +50,6 @@ class _MeditationPageState extends State<MeditationPage> {
   ];
 
   void _onBottomNavBarTap(int index) {
-    if (_currentIndex == index)
-      return; // Do nothing if the same index is tapped
-
     setState(() {
       _currentIndex = index;
     });
@@ -58,24 +57,22 @@ class _MeditationPageState extends State<MeditationPage> {
     switch (index) {
       case 0:
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        // No need to push another MeditationPage
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const SleepPage()));
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ArticlesPage()),
-        );
+        // Stay on Meditation Page
         break;
       case 3:
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const SleepPage()),
-        );
+            context, MaterialPageRoute(builder: (context) => const Yogapage()));
+        break;
+      case 4:
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const ArticlesPage()));
         break;
     }
   }
@@ -83,9 +80,9 @@ class _MeditationPageState extends State<MeditationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 14, 44, 77),
+        backgroundColor: Colors.black,
         title: Text(
           'Meditation',
           style: GoogleFonts.poppins(
@@ -132,7 +129,19 @@ class _MeditationPageState extends State<MeditationPage> {
                 MyContainer(
                   texts: const ["Meditation"],
                   onTap: () {
-                    // No need to push another MeditationPage
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MeditationPage()));
+                  },
+                ),
+                MyContainer(
+                  texts: const ["Yoga"],
+                  onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Yogapage()));
                   },
                 ),
                 MyContainer(
@@ -147,54 +156,59 @@ class _MeditationPageState extends State<MeditationPage> {
               ],
             ),
           ),
-          const SizedBox(height: 5), // Add some spacing between rows
+          const SizedBox(height: 5),
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Number of columns
-                crossAxisSpacing: 2.0, // Horizontal spacing
-                mainAxisSpacing: 2.0, // Vertical spacing
+                crossAxisSpacing: 8.0, // Horizontal spacing
+                mainAxisSpacing: 8.0, // Vertical spacing
+                childAspectRatio: 1.5, // Aspect ratio of each item
               ),
-              itemCount: imageAssets.length, // Number of items
+              itemCount: imageAssets.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.all(8.0), // Padding around each item
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Audioplayers(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(8.0), // Apply border radius
-                        image: DecorationImage(
-                          image: AssetImage(imageAssets[index]),
-                          fit:
-                              BoxFit.cover, // Ensure image covers the container
-                        ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Audioplayers(),
                       ),
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4.0),
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Text(
-                            imageTexts[index],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      image: DecorationImage(
+                        image: AssetImage(imageAssets[index]),
+                        fit: BoxFit.cover,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.7),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.7),
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(8.0),
+                              bottomRight: Radius.circular(8.0)),
+                        ),
+                        child: Text(
+                          imageTexts[index],
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -206,10 +220,13 @@ class _MeditationPageState extends State<MeditationPage> {
           ),
         ],
       ),
-      // bottomNavigationBar: CustomBottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: _onBottomNavBarTap,
-      // ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onBottomNavBarTap,
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.redAccent,
+        unselectedItemColor: Colors.grey[300],
+      ),
     );
   }
 }

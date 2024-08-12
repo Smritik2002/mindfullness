@@ -1,61 +1,61 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Audioplayers extends StatefulWidget {
-  const Audioplayers({Key? key}) : super(key: key);
+  const Audioplayers({super.key});
 
   @override
-  State<Audioplayers> createState() => _AudioplayersState();
+  _AudioplayersState createState() => _AudioplayersState();
 }
 
 class _AudioplayersState extends State<Audioplayers> {
-  final AudioPlayer audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+  Duration _duration = Duration.zero;
+  Duration _position = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    setAudio();
-    audioPlayer.onPlayerStateChanged.listen((state) {
+    _setAudio();
+    _audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
-        isPlaying = state == PlayerState.playing;
+        _isPlaying = state == PlayerState.playing;
       });
     });
-    audioPlayer.onDurationChanged.listen((newDuration) {
+    _audioPlayer.onDurationChanged.listen((newDuration) {
       setState(() {
-        duration = newDuration;
+        _duration = newDuration;
       });
     });
-    audioPlayer.onPositionChanged.listen((newPosition) {
+    _audioPlayer.onPositionChanged.listen((newPosition) {
       setState(() {
-        position = newPosition;
+        _position = newPosition;
       });
     });
   }
 
-  Future<void> setAudio() async {
-    audioPlayer.setReleaseMode(ReleaseMode.loop);
+  Future<void> _setAudio() async {
+    _audioPlayer.setReleaseMode(ReleaseMode.loop);
     final player = AudioCache(prefix: 'assets/');
     final url = await player.load('mind.mp3');
     final audioPlayerUrl = url.path;
 
     try {
-      await audioPlayer.setSourceUrl(audioPlayerUrl);
+      await _audioPlayer.setSourceUrl(audioPlayerUrl);
     } catch (e) {
-      print('Error setting audio source: $e');
+      // Handle error
     }
   }
 
   @override
   void dispose() {
-    audioPlayer.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
-  String formatTime(Duration duration) {
+  String _formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
@@ -66,12 +66,29 @@ class _AudioplayersState extends State<Audioplayers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Audioplayers'),
+        title: Text(
+          'Audioplayers',
+          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Add functionality for download here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Downloading audio...'),
+                ),
+              );
+            },
+            icon: const Icon(Icons.download),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -86,22 +103,25 @@ class _AudioplayersState extends State<Audioplayers> {
             Text(
               'Splash of Fun',
               style: GoogleFonts.poppins(
-                  fontSize: 24, fontWeight: FontWeight.bold),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               'Peaceful Path',
               style: GoogleFonts.poppins(
-                  fontSize: 24, fontWeight: FontWeight.bold),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             Slider(
               min: 0,
-              max: duration.inSeconds.toDouble(),
-              value: position.inSeconds.toDouble(),
+              max: _duration.inSeconds.toDouble(),
+              value: _position.inSeconds.toDouble(),
               onChanged: (value) async {
                 final newPosition = Duration(seconds: value.toInt());
-                await audioPlayer.seek(newPosition);
-                await audioPlayer.resume();
+                await _audioPlayer.seek(newPosition);
               },
             ),
             Padding(
@@ -109,24 +129,51 @@ class _AudioplayersState extends State<Audioplayers> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(formatTime(position)),
-                  Text(formatTime(duration - position)),
+                  Text(_formatTime(_position)),
+                  Text(_formatTime(_duration - _position)),
                 ],
               ),
             ),
-            CircleAvatar(
-              radius: 35,
-              child: IconButton(
-                onPressed: () async {
-                  if (isPlaying) {
-                    await audioPlayer.pause();
-                  } else {
-                    await audioPlayer.resume();
-                  }
-                },
-                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-                iconSize: 50,
-              ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    // Implement backward functionality
+                    final newPosition = _position - const Duration(seconds: 10);
+                    _audioPlayer.seek(newPosition);
+                  },
+                  icon: const Icon(Icons.fast_rewind),
+                  iconSize: 30,
+                ),
+                const SizedBox(width: 20),
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: const Color.fromARGB(255, 151, 200, 240),
+                  child: IconButton(
+                    onPressed: () async {
+                      if (_isPlaying) {
+                        await _audioPlayer.pause();
+                      } else {
+                        await _audioPlayer.resume();
+                      }
+                    },
+                    icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                    iconSize: 40,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                IconButton(
+                  onPressed: () {
+                    // Implement forward functionality
+                    final newPosition = _position + const Duration(seconds: 10);
+                    _audioPlayer.seek(newPosition);
+                  },
+                  icon: const Icon(Icons.fast_forward),
+                  iconSize: 30,
+                ),
+              ],
             ),
           ],
         ),

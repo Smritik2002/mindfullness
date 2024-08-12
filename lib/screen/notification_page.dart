@@ -1,8 +1,74 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class NotificationsPage extends StatelessWidget {
+void main() {
+  // Initialize the awesome_notifications plugin
+  AwesomeNotifications().initialize(
+    // Set the default icon for notifications (null uses the app icon)
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic Notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Colors.teal,
+        ledColor: Colors.white,
+        importance: NotificationImportance.High,
+      ),
+    ],
+  );
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Notifications Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const NotificationsPage(),
+    );
+  }
+}
+
+class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
+
+  @override
+  NotificationsPageState createState() => NotificationsPageState();
+}
+
+class NotificationsPageState extends State<NotificationsPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Check if notifications are allowed
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        // Request permission if not allowed
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+  }
+
+  // Method to create and display a notification
+  void _createNotification() {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 123, // Unique ID for the notification
+        channelKey: 'basic_channel',
+        title: 'Download Completed',
+        body: 'Your file "Video.mp3" has been downloaded successfully.',
+        notificationLayout: NotificationLayout.Default,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +76,7 @@ class NotificationsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 14, 44, 77),
         title: Text(
-          ' Notifications',
+          'Notifications',
           style: GoogleFonts.poppins(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -27,7 +93,7 @@ class NotificationsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          // Download Notification 1
+          // Example Notification 1
           ListTile(
             leading: const Icon(Icons.download, color: Colors.green),
             title: Text(
@@ -44,7 +110,7 @@ class NotificationsPage extends StatelessWidget {
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
             ),
           ),
-          // Download Notification 2
+          // Example Notification 2
           ListTile(
             leading: const Icon(Icons.download, color: Colors.orange),
             title: Text(
@@ -61,7 +127,7 @@ class NotificationsPage extends StatelessWidget {
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
             ),
           ),
-          // Download Notification 3
+          // Example Notification 3
           ListTile(
             leading: const Icon(Icons.download, color: Colors.blue),
             title: Text(
@@ -78,8 +144,12 @@ class NotificationsPage extends StatelessWidget {
               style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
             ),
           ),
-          // Add more download notifications here as needed
         ],
+      ),
+      // Floating action button to trigger a notification
+      floatingActionButton: FloatingActionButton(
+        onPressed: _createNotification,
+        child: const Icon(Icons.notification_important),
       ),
     );
   }

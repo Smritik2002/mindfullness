@@ -9,7 +9,8 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  bool _notificationsEnabled = true;
+  // ignore: unused_field
+  final bool _notificationsEnabled = true;
   bool _darkMode = false;
   String _selectedLanguage = 'English';
 
@@ -36,21 +37,21 @@ class _SettingPageState extends State<SettingPage> {
       ),
       body: ListView(
         children: [
-          ListTile(
-            title: Text(
-              'Notifications',
-              style: GoogleFonts.poppins(fontSize: 18),
-            ),
-            leading: const Icon(Icons.notifications),
-            trailing: Switch(
-              value: _notificationsEnabled,
-              onChanged: (value) {
-                setState(() {
-                  _notificationsEnabled = value;
-                });
-              },
-            ),
-          ),
+          // ListTile(
+          //   title: Text(
+          //     'Notifications',
+          //     style: GoogleFonts.poppins(fontSize: 18),
+          //   ),
+          //   leading: const Icon(Icons.notifications),
+          //   trailing: Switch(
+          //     value: _notificationsEnabled,
+          //     onChanged: (value) {
+          //       setState(() {
+          //         _notificationsEnabled = value;
+          //       });
+          //     },
+          //   ),
+          // ),
           ListTile(
             title: Text(
               'Dark Mode',

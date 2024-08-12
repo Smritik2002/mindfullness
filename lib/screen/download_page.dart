@@ -1,87 +1,170 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:video_player/video_player.dart';
+import 'dart:io';
 
 class DownloadPage extends StatefulWidget {
-  const DownloadPage({super.key});
+  const DownloadPage({super.key, required String videoUrl});
 
   @override
   State<DownloadPage> createState() => _DownloadPageState();
 }
 
 class _DownloadPageState extends State<DownloadPage> {
-  // Sample data for downloads
-  final List<DownloadItem> _downloadItems = [
-    DownloadItem('Image.jpg', 100, 'Completed'),
-    DownloadItem('Video.mp4', 20, 'In Progress'),
-    DownloadItem('Music.mp3', 75, 'Completed'),
-  ];
+  bool _isDownloading = false;
+  String _statusMessage = '';
+  late VideoPlayerController _videoController;
+  File? _downloadedVideoFile;
+
+  Future<void> _requestPermissions() async {
+    if (await Permission.storage.request().isGranted) {
+      // Permission granted
+    } else {
+      // Permission denied
+      setState(() {
+        _statusMessage = 'Storage permission denied';
+      });
+    }
+  }
+
+  Future<void> _downloadFile(String url, String fileName) async {
+    try {
+      await _requestPermissions();
+
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$fileName';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final file = File(filePath);
+        await file.writeAsBytes(response.bodyBytes);
+
+        if (fileName.endsWith('.mp4')) {
+          _downloadedVideoFile = file;
+          _initializeVideoPlayer(filePath);
+        }
+
+        setState(() {
+          _isDownloading = false;
+          _statusMessage = 'File downloaded to $filePath';
+        });
+      } else {
+        setState(() {
+          _isDownloading = false;
+          _statusMessage = 'Failed to download file';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isDownloading = false;
+        _statusMessage = 'Error downloading file: $e';
+      });
+    }
+  }
+
+  void _initializeVideoPlayer(String filePath) {
+    _videoController = VideoPlayerController.file(File(filePath))
+      ..initialize().then((_) {
+        setState(() {}); // Ensure the video player is updated
+        _videoController.play();
+      });
+  }
+
+  void _startDownload() {
+    setState(() {
+      _isDownloading = true;
+      _statusMessage = 'Downloading files...';
+    });
+
+    const videoUrl =
+        'https://www.youtube.com/watch?v=79kpoGF8KWU&pp=ygUOY2FsbW5lc3MgdmlkZW8%3D';
+
+    _downloadFile(videoUrl, 'downloaded_video.mp4');
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 14, 44, 77),
         title: Text(
-          'Downloads',
+          'Download',
           style: GoogleFonts.poppins(
-              fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 14, 44, 77),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
+            Navigator.pop(context);
           },
         ),
+        centerTitle: true,
       ),
-      body: ListView(
-        children: _downloadItems.map((item) {
-          return ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            title: Text(
-              item.fileName,
-              style: GoogleFonts.poppins(
-                  fontSize: 18, fontWeight: FontWeight.bold),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: _isDownloading ? null : _startDownload,
+              child: const Text('Download '),
             ),
-            subtitle: Text(
-              item.status,
-              style: GoogleFonts.poppins(fontSize: 14, color: Colors.grey),
-            ),
-            trailing: SizedBox(
-              width: 100,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  LinearProgressIndicator(
-                    value: item.progress / 100,
-                    backgroundColor: Colors.grey.shade300,
-                    color:
-                        item.status == 'Completed' ? Colors.green : Colors.blue,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${item.progress}%',
-                    style:
-                        GoogleFonts.poppins(fontSize: 12, color: Colors.grey),
-                  ),
-                ],
+            if (_isDownloading)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircularProgressIndicator(),
               ),
-            ),
-            onTap: () {
-              // Define action for tap, e.g., show details
-            },
-          );
-        }).toList(),
+            if (_statusMessage.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  _statusMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            if (_downloadedVideoFile != null &&
+                _videoController.value.isInitialized)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AspectRatio(
+                  aspectRatio: _videoController.value.aspectRatio,
+                  child: VideoPlayer(_videoController),
+                ),
+              ),
+          ],
+        ),
       ),
+      floatingActionButton:
+          _downloadedVideoFile != null && _videoController.value.isInitialized
+              ? FloatingActionButton(
+                  onPressed: () {
+                    setState(() {
+                      if (_videoController.value.isPlaying) {
+                        _videoController.pause();
+                      } else {
+                        _videoController.play();
+                      }
+                    });
+                  },
+                  child: Icon(
+                    _videoController.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                  ),
+                )
+              : null,
     );
   }
-}
-
-class DownloadItem {
-  final String fileName;
-  final int progress; // In percentage
-  final String status;
-
-  DownloadItem(this.fileName, this.progress, this.status);
 }

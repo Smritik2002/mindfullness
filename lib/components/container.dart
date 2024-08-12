@@ -13,7 +13,7 @@ class MyContainer extends StatelessWidget {
       borderRadius: BorderRadius.circular(
           8), // Add this to match the Container's borderRadius
       child: Container(
-        height: 45,
+        height: 50,
         width: 100,
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(12.0),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mindfullness/screen/notification_page.dart';
 import 'package:mindfullness/screen/search_page.dart';
-import 'package:mindfullness/screen/download_page.dart'; // Import the DownloadPage
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -11,6 +10,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
+    required Color selectedItemColor,
+    required Color backgroundColor,
+    Color? unselectedItemColor,
   });
 
   @override
@@ -29,10 +31,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
           icon: Icon(Icons.notification_add),
           label: 'Notifications',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.download),
-          label: 'Download',
-        ),
       ],
       currentIndex: currentIndex,
       onTap: (index) {
@@ -44,13 +42,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
           _handleNotificationsTap(context);
         } else if (index == 3) {
           // Custom behavior for the "Download" item
-          _handleDownloadTap(context);
+          _handleNotificationsTap(context);
         } else {
           // Handle other taps
           onTap(index);
         }
       },
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.black,
     );
@@ -67,13 +65,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const NotificationsPage()),
-    );
-  }
-
-  void _handleDownloadTap(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const DownloadPage()),
     );
   }
 }

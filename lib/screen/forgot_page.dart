@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mindfullness/screen/login_page.dart';
 import 'package:mindfullness/screen/verification_page.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
@@ -54,10 +55,14 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             TextButton(
               onPressed: () {
-                // Define what happens when the "Back to login" button is pressed
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ));
               },
               child: Text(
                 'Back to login',
